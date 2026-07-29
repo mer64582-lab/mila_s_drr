@@ -1,1 +1,702 @@
-# mila_s_drr
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>С Днём Рождения! 🎉</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Caveat:wght@600;700&family=Montserrat:wght@400;600;700&display=swap');
+
+    :root {
+      --primary-color: #ff6b81;
+      --secondary-color: #ffa502;
+      --bg-color: #fffaf0;
+      --card-bg: #ffffff;
+      --text-color: #2f3542;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Montserrat', sans-serif;
+      background-color: var(--bg-color);
+      color: var(--text-color);
+      line-height: 1.6;
+      overflow-x: hidden;
+    }
+
+    header {
+      text-align: center;
+      padding: 60px 20px 40px;
+      background: linear-gradient(135deg, #ff9a9e 0%, #fecfef 100%);
+      color: white;
+      border-bottom-left-radius: 40px;
+      border-bottom-right-radius: 40px;
+      box-shadow: 0 10px 20px rgba(0,0,0,0.05);
+    }
+
+    .header-photo {
+      width: 180px;
+      height: 180px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 5px solid white;
+      box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+      margin-bottom: 25px;
+      animation: pop 1s ease-in-out;
+    }
+
+    header h1 {
+      font-family: 'Caveat', cursive;
+      font-size: 3.8rem;
+      margin-bottom: 10px;
+      text-shadow: 2px 2px 4px rgba(0,0,0,0.15);
+      animation: pop 1s ease-in-out;
+    }
+
+    header p {
+      font-size: 1.3rem;
+      font-weight: 600;
+      opacity: 0.95;
+    }
+
+    .container {
+      max-width: 1400px;
+      margin: 0 auto;
+      padding: 40px 20px;
+    }
+
+    .wishes-card {
+      background: var(--card-bg);
+      border-radius: 20px;
+      padding: 35px;
+      margin-bottom: 50px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.06);
+      border-left: 6px solid var(--primary-color);
+    }
+
+    .wishes-card h2 {
+      font-size: 2rem;
+      color: var(--primary-color);
+      margin-bottom: 15px;
+    }
+
+    .wishes-card p {
+      font-size: 1.15rem;
+      margin-bottom: 15px;
+      color: #57606f;
+    }
+
+    .category-title {
+      font-family: 'Caveat', cursive;
+      font-size: 2.8rem;
+      color: var(--primary-color);
+      margin: 40px 0 20px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      border-bottom: 2px dashed #ffeaa7;
+      padding-bottom: 10px;
+    }
+
+    .gallery-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 20px;
+      margin-bottom: 40px;
+    }
+
+    .photo-card {
+      background: white;
+      padding: 12px;
+      border-radius: 18px;
+      box-shadow: 0 8px 25px rgba(0,0,0,0.06);
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      text-align: center;
+    }
+
+    .photo-card:hover {
+      transform: translateY(-8px) rotate(0.5deg);
+      box-shadow: 0 15px 35px rgba(0,0,0,0.12);
+    }
+
+    .photo-card img {
+      width: 100%;
+      height: 250px;
+      object-fit: cover;
+      border-radius: 12px;
+      margin-bottom: 10px;
+      background: #f0f0f0;
+      cursor: pointer;
+      transition: opacity 0.3s ease;
+    }
+
+    .photo-card img:hover {
+      opacity: 0.9;
+    }
+
+    .photo-card span {
+      font-family: 'Caveat', cursive;
+      font-size: 1.3rem;
+      color: #747d8c;
+      display: block;
+      padding: 5px 0;
+    }
+
+    /* Стили для модального окна просмотра фото */
+    .image-modal {
+      display: none;
+      position: fixed;
+      z-index: 2000;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.9);
+      justify-content: center;
+      align-items: center;
+      animation: fadeIn 0.3s ease;
+    }
+
+    .image-modal-content {
+      max-width: 90%;
+      max-height: 90%;
+      position: relative;
+    }
+
+    .image-modal-content img {
+      max-width: 100%;
+      max-height: 90vh;
+      object-fit: contain;
+      border-radius: 10px;
+      box-shadow: 0 10px 40px rgba(0,0,0,0.5);
+    }
+
+    .image-modal-close {
+      position: absolute;
+      top: -40px;
+      right: 0;
+      color: white;
+      font-size: 35px;
+      font-weight: bold;
+      cursor: pointer;
+      transition: color 0.3s;
+      line-height: 1;
+    }
+
+    .image-modal-close:hover {
+      color: #ff6b81;
+    }
+
+    .wishes-heading {
+      font-family: 'Caveat', cursive;
+      font-size: 2.8rem;
+      color: var(--primary-color);
+      text-align: center;
+      margin: 50px 0 30px;
+      animation: pop 0.8s ease-in-out;
+    }
+
+    .wishes-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+      gap: 20px;
+      margin: 0 0 50px 0;
+    }
+
+    .wish-box {
+      background-color: #fff0f3;
+      padding: 25px;
+      border-radius: 18px;
+      text-align: center;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.04);
+      transition: transform 0.2s ease;
+    }
+
+    .wish-box:hover {
+      transform: scale(1.03);
+    }
+
+    .wish-box .icon {
+      font-size: 2.5rem;
+      margin-bottom: 10px;
+    }
+
+    .wish-box h3 {
+      font-size: 1.3rem;
+      color: var(--primary-color);
+      margin-bottom: 8px;
+    }
+
+    footer {
+      text-align: center;
+      padding: 50px 20px;
+      background-color: #fff;
+      border-top: 1px solid #ffeaa7;
+      margin-top: 50px;
+    }
+
+    .surprise-section h2 {
+      font-family: 'Caveat', cursive;
+      font-size: 2.8rem;
+      color: #2f3542;
+      margin-bottom: 20px;
+    }
+
+    .btn-surprise {
+      background: linear-gradient(135deg, #ff6b81, #ffa502);
+      border: none;
+      color: white;
+      font-family: 'Montserrat', sans-serif;
+      font-size: 1.4rem;
+      font-weight: 700;
+      padding: 18px 45px;
+      border-radius: 50px;
+      cursor: pointer;
+      box-shadow: 0 10px 20px rgba(255, 107, 129, 0.3);
+      transition: all 0.3s ease;
+      letter-spacing: 1px;
+    }
+
+    .btn-surprise:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 15px 25px rgba(255, 107, 129, 0.4);
+    }
+
+    .modal {
+      display: none;
+      position: fixed;
+      z-index: 1000;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      overflow: auto;
+      background-color: rgba(0,0,0,0.6);
+      justify-content: center;
+      align-items: center;
+      animation: fadeIn 0.3s ease;
+    }
+
+    .modal-content {
+      background: white;
+      margin: auto;
+      padding: 40px;
+      border-radius: 25px;
+      max-width: 500px;
+      width: 90%;
+      text-align: center;
+      box-shadow: 0 20px 40px rgba(0,0,0,0.2);
+      position: relative;
+      animation: slideUp 0.4s ease;
+    }
+
+    .modal-content h3 {
+      font-family: 'Caveat', cursive;
+      font-size: 2.5rem;
+      color: var(--primary-color);
+      margin-bottom: 15px;
+    }
+
+    .modal-content p {
+      font-size: 1.3rem;
+      margin-bottom: 25px;
+      color: #57606f;
+    }
+
+    .close-btn {
+      background-color: #ff6b81;
+      color: white;
+      border: none;
+      padding: 12px 30px;
+      font-size: 1rem;
+      font-weight: 600;
+      border-radius: 30px;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+
+    .close-btn:hover {
+      background-color: #ee5a6f;
+    }
+
+    @media (max-width: 768px) {
+      .gallery-grid {
+        grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+        gap: 15px;
+      }
+      
+      .photo-card img {
+        height: 200px;
+      }
+      
+      header h1 {
+        font-size: 2.8rem;
+      }
+      
+      .category-title {
+        font-size: 2.2rem;
+      }
+
+      .header-photo {
+        width: 140px;
+        height: 140px;
+      }
+
+      .wishes-heading {
+        font-size: 2.2rem;
+      }
+    }
+
+    @keyframes pop {
+      0% { transform: scale(0.8); opacity: 0; }
+      80% { transform: scale(1.05); }
+      100% { transform: scale(1); opacity: 1; }
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+
+    @keyframes slideUp {
+      from { transform: translateY(50px); opacity: 0; }
+      to { transform: translateY(0); opacity: 1; }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <!-- Фото в шапке - замените src на свое изображение -->
+    <img src="3 (6).jpg" alt="Фото" class="header-photo">
+    <h1>С Днём Рождения! 🎂</h1>
+    <p>Самому замечательному человеку</p>
+  </header>
+
+  <div class="container">
+    <div class="wishes-card">
+      <h2>Дорогая мама!</h2>
+      <p>
+        В этот чудесный день хочется пожелать тебе всего самого светлого и доброго. 
+        Пусть каждый миг будет наполнен радостью, теплом и улыбками близких. 
+      </p>
+      <p>
+        Ты — удивительный человек, и мы бесконечно рады быть частью твоей жизни. 
+        Мы поддержим тебя во всех твоих начинаниях и всегда будем рядом (даже, если ты будешь такой же, как у 21 века)
+      </p>
+      <p>
+        Оставайся такой же искренней, целеустремленной и невероятно обаятельной. 
+        Пусть мечты сбываются быстрее, чем ты ожидаешь, а удача никогда не покидает тебя! 🎈
+      </p>
+    </div>
+
+    <!-- Секция "Ты" - 15 фото -->
+    <h2 class="category-title">🌟 Ты</h2>
+    <div class="gallery-grid">
+      <!-- Фото 1 -->
+      <div class="photo-card">
+        <img src="3 (1).jpg" alt="Ты 1" onclick="openImageModal(this.src)">
+        <span>Любимая</span>
+      </div>
+      <!-- Фото 2 -->
+      <div class="photo-card">
+        <img src="3 (2).jpg" alt="Ты 2" onclick="openImageModal(this.src)">
+        <span>Целеустремленная</span>
+      </div>
+      <!-- Фото 3 -->
+      <div class="photo-card">
+        <img src="3 (3).jpg" alt="Ты 3" onclick="openImageModal(this.src)">
+        <span>Жизнелюбивая</span>
+      </div>
+      <!-- Фото 4 -->
+      <div class="photo-card">
+        <img src="3 (4).jpg" alt="Ты 4" onclick="openImageModal(this.src)">
+        <span>Ранимая</span>
+      </div>
+      <!-- Фото 5 -->
+      <div class="photo-card">
+        <img src="3 (5).jpg" alt="Ты 5" onclick="openImageModal(this.src)">
+        <span>Прекрасная</span>
+      </div>
+      <!-- Фото 6 -->
+      <div class="photo-card">
+        <img src="3 (6).jpg" alt="Ты 6" onclick="openImageModal(this.src)">
+        <span>Нужная</span>
+      </div>
+      <!-- Фото 7 -->
+      <div class="photo-card">
+        <img src="3 (15).jpg" alt="Ты 7" onclick="openImageModal(this.src)">
+        <span>Ненаглядная</span>
+      </div>
+      <!-- Фото 8 -->
+      <div class="photo-card">
+        <img src="3 (7).jpg" alt="Ты 8" onclick="openImageModal(this.src)">
+        <span>Понимающая</span>
+      </div>
+      <!-- Фото 9 -->
+      <div class="photo-card">
+        <img src="3 (8).jpg" alt="Ты 9" onclick="openImageModal(this.src)">
+        <span>Эмоциональная</span>
+      </div>
+      <!-- Фото 10 -->
+      <div class="photo-card">
+        <img src="3 (9).jpg" alt="Ты 10" onclick="openImageModal(this.src)">
+        <span>Эффектная</span>
+      </div>
+      <!-- Фото 11 -->
+      <div class="photo-card">
+        <img src="3 (10).jpg" alt="Ты 11" onclick="openImageModal(this.src)">
+        <span>Восхитительная</span>
+      </div>
+      <!-- Фото 12 -->
+      <div class="photo-card">
+        <img src="3 (11).jpg" alt="Ты 12" onclick="openImageModal(this.src)">
+        <span>Превосходная</span>
+      </div>
+      <!-- Фото 13 -->
+      <div class="photo-card">
+        <img src="3 (12).jpg" alt="Ты 13" onclick="openImageModal(this.src)">
+        <span>Фееричная</span>
+      </div>
+      <!-- Фото 14 -->
+      <div class="photo-card">
+        <img src="3 (13).jpg" alt="Ты 14" onclick="openImageModal(this.src)">
+        <span>Иногда строгая</span>
+      </div>
+      <!-- Фото 15 -->
+      <div class="photo-card">
+        <img src="3 (14).jpg" alt="Ты 15" onclick="openImageModal(this.src)">
+        <span>Самая лучшая</span>
+      </div>
+    </div>
+
+    <!-- Секция "Ты и семья" - 17 фото -->
+    <h2 class="category-title">👨‍👩‍👧‍👦 Ты и семья</h2>
+    <div class="gallery-grid">
+      <!-- Фото 1 -->
+      <div class="photo-card">
+        <img src="1 (1).jpg" alt="Семья 1" onclick="openImageModal(this.src)">
+        <span>Задумчивая</span>
+      </div>
+      <!-- Фото 2 -->
+      <div class="photo-card">
+        <img src="1 (2).jpg" alt="Семья 2" onclick="openImageModal(this.src)">
+        <span>Волнительная</span>
+      </div>
+      <!-- Фото 3 -->
+      <div class="photo-card">
+        <img src="1 (3).jpg" alt="Семья 3" onclick="openImageModal(this.src)">
+        <span>Честная</span>
+      </div>
+      <!-- Фото 4 -->
+      <div class="photo-card">
+        <img src="1 (4).jpg" alt="Семья 4" onclick="openImageModal(this.src)">
+        <span>Обаятельная</span>
+      </div>
+      <!-- Фото 5 -->
+      <div class="photo-card">
+        <img src="1 (5).jpg" alt="Семья 5" onclick="openImageModal(this.src)">
+        <span>Неунывающая</span>
+      </div>
+      <!-- Фото 6 -->
+      <div class="photo-card">
+        <img src="1 (6).jpg" alt="Семья 6" onclick="openImageModal(this.src)">
+        <span>Сложная</span>
+      </div>
+      <!-- Фото 7 -->
+      <div class="photo-card">
+        <img src="1 (7).jpg" alt="Семья 7" onclick="openImageModal(this.src)">
+        <span>Уважительная</span>
+      </div>
+      <!-- Фото 8 -->
+      <div class="photo-card">
+        <img src="1 (8).jpg" alt="Семья 8" onclick="openImageModal(this.src)">
+        <span>Упрямая</span>
+      </div>
+      <!-- Фото 9 -->
+      <div class="photo-card">
+        <img src="1 (9).jpg" alt="Семья 9" onclick="openImageModal(this.src)">
+        <span>Хрупкая</span>
+      </div>
+      <!-- Фото 10 -->
+      <div class="photo-card">
+        <img src="1 (10).jpg" alt="Семья 10" onclick="openImageModal(this.src)">
+        <span>Серьезная</span>
+      </div>
+      <!-- Фото 11 -->
+      <div class="photo-card">
+        <img src="1 (11).jpg" alt="Семья 11" onclick="openImageModal(this.src)">
+        <span>Живописная</span>
+      </div>
+      <!-- Фото 12 -->
+      <div class="photo-card">
+        <img src="1 (12).jpg" alt="Семья 12" onclick="openImageModal(this.src)">
+        <span>Человечная</span>
+      </div>
+      <!-- Фото 13 -->
+      <div class="photo-card">
+        <img src="1 (13).jpg" alt="Семья 13" onclick="openImageModal(this.src)">
+        <span>Солнечная</span>
+      </div>
+      <!-- Фото 14 -->
+      <div class="photo-card">
+        <img src="1 (14).jpg" alt="Семья 14" onclick="openImageModal(this.src)">
+        <span>Современная</span>
+      </div>
+      <!-- Фото 15 -->
+      <div class="photo-card">
+        <img src="1 (15).jpg" alt="Семья 15" onclick="openImageModal(this.src)">
+        <span>Умная</span>
+      </div>
+      <!-- Фото 16 -->
+      <div class="photo-card">
+        <img src="1 (16).jpg" alt="Семья 16" onclick="openImageModal(this.src)">
+        <span>Невообразимая</span>
+      </div>
+      <!-- Фото 17 -->
+      <div class="photo-card">
+        <img src="1 (17).jpg" alt="Семья 17" onclick="openImageModal(this.src)">
+        <span>Пылкая</span>
+      </div>
+    </div>
+
+    <!-- Секция "Ты и друзья" - 7 фото -->
+    <h2 class="category-title">👯 Ты и друзья</h2>
+    <div class="gallery-grid">
+      <!-- Фото 1 -->
+      <div class="photo-card">
+        <img src="2 (1).jpg" alt="Друзья 1" onclick="openImageModal(this.src)">
+        <span>Дивная</span>
+      </div>
+      <!-- Фото 2 -->
+      <div class="photo-card">
+        <img src="2 (2).jpg" alt="Друзья 2" onclick="openImageModal(this.src)">
+        <span>Самая-самая</span>
+      </div>
+      <!-- Фото 3 -->
+      <div class="photo-card">
+        <img src="2 (3).jpg" alt="Друзья 3" onclick="openImageModal(this.src)">
+        <span>Зажигательная</span>
+      </div>
+      <!-- Фото 4 -->
+      <div class="photo-card">
+        <img src="2 (4).jpg" alt="Друзья 4" onclick="openImageModal(this.src)">
+        <span>Клевая</span>
+      </div>
+      <!-- Фото 5 -->
+      <div class="photo-card">
+        <img src="2 (5).jpg" alt="Друзья 5" onclick="openImageModal(this.src)">
+        <span>Требовательная</span>
+      </div>
+      <!-- Фото 6 -->
+      <div class="photo-card">
+        <img src="2 (6).jpg" alt="Друзья 6" onclick="openImageModal(this.src)">
+        <span>Настоящая</span>
+      </div>
+      <!-- Фото 7 -->
+      <div class="photo-card">
+        <img src="2 (7).jpg" alt="Друзья 7" onclick="openImageModal(this.src)">
+        <span>Жизнерадостная</span>
+      </div>
+    </div>
+
+    <!-- Заголовок перед пожеланиями -->
+    <h2 class="wishes-heading">Мы желаем тебе:</h2>
+
+    <!-- Блоки пожеланий -->
+    <div class="wishes-grid">
+      <div class="wish-box">
+        <div class="icon">💫</div>
+        <h3>Вдохновения</h3>
+        <p>Для грандиозных планов и идей</p>
+      </div>
+      <div class="wish-box">
+        <div class="icon">✈️</div>
+        <h3>Путешествий</h3>
+        <p>Новых городов и незабываемых мест</p>
+      </div>
+      <div class="wish-box">
+        <div class="icon">🍀</div>
+        <h3>Удачи</h3>
+        <p>Во всех начинаниях и делах</p>
+      </div>
+      <div class="wish-box">
+        <div class="icon">❤️</div>
+        <h3>Любви</h3>
+        <p>И искренности каждый день</p>
+      </div>
+    </div>
+  </div>
+
+  <footer>
+    <div class="surprise-section">
+      <h2>Главный интригующий момент... 🎁</h2>
+      <button class="btn-surprise" onclick="openModal()">Получить сюрприз ✨</button>
+    </div>
+  </footer>
+
+  <!-- Модальное окно для сюрприза -->
+  <div class="modal" id="surpriseModal">
+    <div class="modal-content">
+      <h3>Сюрприз! 🎉</h3>
+      <p>А основной подарок уже лежит в твоих сообщениях! 💌🎁</p>
+      <button class="close-btn" onclick="closeModal()">Закрыть</button>
+    </div>
+  </div>
+
+  <!-- Модальное окно для просмотра фото -->
+  <div class="image-modal" id="imageModal">
+    <div class="image-modal-content">
+      <span class="image-modal-close" onclick="closeImageModal()">&times;</span>
+      <img id="modalImage" src="" alt="Полноразмерное фото">
+    </div>
+  </div>
+
+  <script>
+    // Функции для модального окна сюрприза
+    function openModal() {
+      document.getElementById('surpriseModal').style.display = 'flex';
+    }
+
+    function closeModal() {
+      document.getElementById('surpriseModal').style.display = 'none';
+    }
+
+    // Функции для модального окна просмотра фото
+    function openImageModal(imageSrc) {
+      document.getElementById('modalImage').src = imageSrc;
+      document.getElementById('imageModal').style.display = 'flex';
+    }
+
+    function closeImageModal() {
+      document.getElementById('imageModal').style.display = 'none';
+    }
+
+    // Закрытие окон при клике вне содержимого
+    window.onclick = function(event) {
+      let surpriseModal = document.getElementById('surpriseModal');
+      let imageModal = document.getElementById('imageModal');
+      
+      if (event.target == surpriseModal) {
+        surpriseModal.style.display = "none";
+      }
+      
+      if (event.target == imageModal) {
+        imageModal.style.display = "none";
+      }
+    }
+
+    // Закрытие модального окна фото при нажатии Escape
+    document.addEventListener('keydown', function(event) {
+      if (event.key === 'Escape') {
+        document.getElementById('imageModal').style.display = 'none';
+        document.getElementById('surpriseModal').style.display = 'none';
+      }
+    });
+  </script>
+</body>
+</html>
